@@ -1,0 +1,30 @@
+mydata<-read.delim(file.choose(), header=T)
+y<- mydata$y
+x3<- mydata$x3
+x10<- mydata$x10
+x11<- mydata$x11
+x12<- mydata$x12
+x16<- mydata$x16
+install.packages('pscl') 
+library(pscl)
+install.packages('MASS') 
+library('MASS')
+Claim=data.frame(y=y,x3=x3,x10=x10,x11=x11,x12=x12, x16=x16)
+
+#####
+## ZI Poisson ##
+zip1=zeroinfl(y~x3+x10+x11+x12+x16,
+            Claim,
+            dist = c("poisson"),link = c("logit"))
+summary(zip1)
+AIC(zip1)
+BIC(zip1)
+
+## ZI negative binomial ##
+zinb=zeroinfl(y~x3+x10+x11+x12+x16,
+              Claim,
+              dist = c("negbin"),link = c("logit"))
+
+summary(zinb)
+AIC(zinb)
+BIC(zinb)
